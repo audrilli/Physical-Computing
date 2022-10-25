@@ -42,7 +42,7 @@ Adafruit_VL53L0X lox2 = Adafruit_VL53L0X();
 VL53L0X_RangingMeasurementData_t measure1; // Measurement
 VL53L0X_RangingMeasurementData_t measure2;
 
-int prevInterval = 0; // For time constraints (5 seconds below)
+int prevInterval = 0; // For time constraints (2.5 seconds below)
 int currentInterval = 0;
 
 bool isFirstTimeRunning = true; // One-time flag
@@ -85,18 +85,7 @@ void setup() {
 }
 
 void loop() {
-  
-
-//  while (isFirstTimeRunning == true) {
-//    Serial.println("HEY");
-//    detectFirst();
-//  }
-
-//    while (isFirstTimeRunning == false) {
-   detect();
-//    }
-  
-
+  detect();
   delay(100);
 }
 
@@ -139,38 +128,19 @@ void checkMeasurementWithMotor(int motorPin) {
       //L2, R1
       side = motorPin == motorPinA ? right : left;
 
-      // SGITT DA NO EIN CHALLENGE. ICH MUESS BIM ERSTE MAL BESTIMME WELLES MOTOR ICH ZERST NUME IN EIN RICHTIG LAUFE UND DAS ANDERE EIFACH STILL BLIBT BEVOR ICH BEIDE ZUM LAUFE BRINGE: IN EIN RICHTIG MUESS' JA ZERSCHT
-
       if (side == right) {
-        // Runs motor for five seconds
+        // Runs motor for two and a half seconds
         while (prevInterval - currentInterval <= 2500)  {
           prevInterval = millis();
-                    digitalWrite(motorPinA, LOW);
-                    digitalWrite(motorPinB, HIGH);
-                    digitalWrite(motorPinC, HIGH);
-                    digitalWrite(motorPinD, LOW);
-          Serial.println("LEFT TURNING");
+          digitalWrite(motorPinA, side == right ? LOW : HIGH);
+          digitalWrite(motorPinB, side == right ? HIGH : LOW);
+          digitalWrite(motorPinC, side == right ? HIGH : LOW);
+          digitalWrite(motorPinD, side == right ? LOW : HIGH);
         }
-                digitalWrite(motorPinA, LOW);
-                digitalWrite(motorPinB, LOW);
-                digitalWrite(motorPinC, LOW);
-                digitalWrite(motorPinD, LOW);
-        Serial.println("LEFT DONE");
-      } else {
-        // Runs motor for five seconds
-        while (prevInterval - currentInterval <= 2500)  {
-          prevInterval = millis();
-                    digitalWrite(motorPinA, HIGH);
-                    digitalWrite(motorPinB, LOW);
-                    digitalWrite(motorPinC, LOW);
-                    digitalWrite(motorPinD, HIGH);
-          Serial.println("RIGHT TURNING");
-        }
-                digitalWrite(motorPinA, LOW);
-                digitalWrite(motorPinB, LOW);
-                digitalWrite(motorPinC, LOW);
-                digitalWrite(motorPinD, LOW);
-        Serial.println("RIGHT DONE");
+        digitalWrite(motorPinA, LOW); // Stops all
+        digitalWrite(motorPinB, LOW);
+        digitalWrite(motorPinC, LOW);
+        digitalWrite(motorPinD, LOW);
       }
     }
   } else {
@@ -178,84 +148,6 @@ void checkMeasurementWithMotor(int motorPin) {
   }
 }
 
-
-//void detectFirst() {
-//  lox1.rangingTest(&measure1, false); // Set to 'false' for no debug data printout
-//  lox2.rangingTest(&measure2, false);
-//
-//  // Prints reading from lox1
-//  Serial.print(F("lox1: "));
-//
-//  // – Right state
-//  // The right motor (R) is activated by the first sensor (1)
-//  checkFirstMeasurementWithMotor(motorPinA);
-//
-//  // – Left State
-//  // The left motor (L) is activated by the second sensor (2)
-//  checkFirstMeasurementWithMotor(motorPinC);
-//
-//  Serial.println();
-//}
-//
-//// Turns that motor if its respective sensor detects nearby hand movement
-//void checkFirstMeasurementWithMotor(int motorPin) {
-//  VL53L0X_RangingMeasurementData_t measure = motorPin == motorPinA ? measure1 : measure2;
-//
-//  // Starts counting the time
-//  currentInterval = millis();
-//  prevInterval = currentInterval;
-//
-//  // ...if not out of range
-//  if (measure.RangeStatus != 4) {
-//    Serial.print(measure.RangeMilliMeter);
-//
-//    // ...if hand is less than 100 units away
-//    if (measure.RangeMilliMeter < 100) {
-//
-//      side = motorPin == motorPinA ? right : left;
-//
-//      // SGITT DA NO EIN CHALLENGE. ICH MUESS BIM ERSTE MAL BESTIMME WELLES MOTOR ICH ZERST NUME IN EIN RICHTIG LAUFE UND DAS ANDERE EIFACH STILL BLIBT BEVOR ICH BEIDE ZUM LAUFE BRINGE: IN EIN RICHTIG MUESS' JA ZERSCHT
-//
-//      if (side == right) {
-//        // Runs motor for five seconds
-//        while (prevInterval - currentInterval <= 5000)  {
-//          prevInterval = millis();
-//                    digitalWrite(motorPinA, LOW);
-//                    digitalWrite(motorPinB, HIGH);
-////                    digitalWrite(motorPinC, LOW);
-////                    digitalWrite(motorPinD, LOW);
-////                    isFirstTimeRunning = true;
-////          Serial.println("FIRST TIME LEFT TURNING");
-//        }
-//                digitalWrite(motorPinA, LOW);
-//                digitalWrite(motorPinB, LOW);
-////                digitalWrite(motorPinC, LOW);
-////                digitalWrite(motorPinD, LOW);
-////        Serial.println("FIRST TIME LEFT DONE");
-//        isFirstTimeRunning = false;
-//      } else {
-//        // Runs motor for five seconds
-//        while (prevInterval - currentInterval <= 5000)  {
-//          prevInterval = millis();
-////                    digitalWrite(motorPinA, LOW);
-////                    digitalWrite(motorPinB, LOW);
-//                    digitalWrite(motorPinC, LOW);
-//                    digitalWrite(motorPinD, HIGH);
-////                    isFirstTimeRunning = true;
-//         // Serial.println("FIRST TIME RIGHT TURNING");
-//        }
-////                digitalWrite(motorPinA, LOW);
-////                digitalWrite(motorPinB, LOW);
-//                digitalWrite(motorPinC, LOW);
-//                digitalWrite(motorPinD, LOW);
-//        //Serial.println("FIRST TIME RIGHT DONE");
-//        isFirstTimeRunning = false;
-//      }
-//    }
-//  } else {
-//    Serial.print(F("Out of range"));
-//  }
-//}
 
 // – Helpers
 // Defines the pins
