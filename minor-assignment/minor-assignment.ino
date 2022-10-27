@@ -128,20 +128,18 @@ void checkMeasurementWithMotor(int motorPin) {
       //L2, R1
       side = motorPin == motorPinA ? right : left;
 
-      if (side == right) {
-        // Runs motor for two and a half seconds
-        while (prevInterval - currentInterval <= 2500)  {
-          prevInterval = millis();
-          digitalWrite(motorPinA, side == right ? LOW : HIGH);
-          digitalWrite(motorPinB, side == right ? HIGH : LOW);
-          digitalWrite(motorPinC, side == right ? HIGH : LOW);
-          digitalWrite(motorPinD, side == right ? LOW : HIGH);
-        }
-        digitalWrite(motorPinA, LOW); // Stops all
-        digitalWrite(motorPinB, LOW);
-        digitalWrite(motorPinC, LOW);
-        digitalWrite(motorPinD, LOW);
+      // Runs motor for two and a half seconds
+      while (prevInterval - currentInterval <= 2500)  {
+        prevInterval = millis();
+        digitalWrite(motorPinA, side == right ? LOW : HIGH);
+        digitalWrite(motorPinB, side == right ? HIGH : LOW);
+        digitalWrite(motorPinC, side == right ? HIGH : LOW);
+        digitalWrite(motorPinD, side == right ? LOW : HIGH);
       }
+      digitalWrite(motorPinA, LOW); // Stops all
+      digitalWrite(motorPinB, LOW);
+      digitalWrite(motorPinC, LOW);
+      digitalWrite(motorPinD, LOW);
     }
   } else {
     Serial.print(F("Out of range"));
