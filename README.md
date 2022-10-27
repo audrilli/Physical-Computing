@@ -2,11 +2,13 @@
 ### Exercise 1
 A Potentiometer controls an led and it's intensity.
 
-<img width="300" alt="picture_potentiometer" src="https://user-images.githubusercontent.com/104060149/198291720-3eb9262e-c4c0-46a6-abbd-258b02a25d58.jpeg">
+<img width="500" alt="picture_potentiometer" src="https://user-images.githubusercontent.com/104060149/198291720-3eb9262e-c4c0-46a6-abbd-258b02a25d58.jpeg">
 
 Scematic/ Cirquit
 
-<img width="300" alt="Cirquit_Potentiometer" src="https://user-images.githubusercontent.com/104060149/198305102-42c4505f-858f-482f-ab4d-43b4d1b0c01d.png">
+<img width="500" alt="Cirquit_Potentiometer" src="https://user-images.githubusercontent.com/104060149/198305102-42c4505f-858f-482f-ab4d-43b4d1b0c01d.png">
+<img width="500" alt="Schematic_Potentiometer" src="https://user-images.githubusercontent.com/104060149/198306778-9c3c0ef8-85f8-48d1-9daa-7a6756d1befd.png">
+
 
 Code
 ```C++
