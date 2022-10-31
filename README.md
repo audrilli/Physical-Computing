@@ -158,6 +158,117 @@ void loop() {
   }   
 }
 ```
+### Exercise 6
+Connect Arduino together and send potentiometer signal to control
+inbuilt LEDs. Use the code found in Github to control the devices.
+
+Cirquit/ Schematic
+
+<img width="500" alt="Cirquit" src="https://user-images.githubusercontent.com/104060149/198984520-b140b949-dfd2-4b1b-96cc-2f5553d311ff.png">
+<img width="500" alt="Schematic" src="https://user-images.githubusercontent.com/104060149/198984543-1a42cd07-fa1f-4b5d-9f48-cd58df9b528e.png">
+
+Code
+(Example from Github: 
+
+https://github.com/IAD-ZHDK/Physical-Computing/blob/main/I2C%20Arduino%20Communication/master_code/master_code.ino
+https://github.com/IAD-ZHDK/Physical-Computing/blob/main/I2C%20Arduino%20Communication/slave_code/slave_code.ino)
+```C++
+ // Aruindo Master Sketch
+
+#include <Wire.h>
+
+byte recI2C;               // data received from I2C bus
+unsigned long time_start;   // start time in milliseconds
+int ledVal;               // status of LED: 1 = ON, 0 = OFF
+byte potVal;             // potentiometer position
+
+void setup(){
+  Wire.begin(); // join I2C bus as the master
+  
+  // initialize global variables
+  recI2C = 255;
+  time_start = millis();
+  ledVal = 0;
+  
+  pinMode(10, OUTPUT);    // set pin 13 as an output
+  Serial.begin(9600);
+}
+
+void loop(){
+  // read potentiometer position
+  potVal = analogRead(A0);   // read the voltage at pin A0 (potentiometer voltage)
+
+  // send potentiometer position to Slave device 0x08
+  Wire.beginTransmission(0x08); // informs the bus that we will be sending data to slave device 8 (0x08)
+  Wire.write(potVal);        // send value_pot
+  Wire.endTransmission();       // informs the bus and the slave device that we have finished sending data
+
+  Wire.requestFrom(0x08, 1);    // request potentiometer position from slave 0x08
+  if(Wire.available()) {        // read response from slave 0x08
+    recI2C = Wire.read();
+  }
+  
+  // blink logic code
+//  if((millis() - time_start) > (1000 * (float)(recI2C/255))) {
+//    ledVal = !ledVal;
+//    time_start = millis();
+//  }
+//  
+  ledVal = (int)(recI2C/255); //normalizing the incoming data between 0 and 1
+  digitalWrite(10, ledVal);
+  Serial.println(ledVal);
+}
+```
+```C++
+// Arduino Slave Sketch
+
+#include <Wire.h>
+
+byte recI2C;            // data received from I2C bus
+unsigned long time_start;   // start time in mSec
+int ledVal;               // status of LED: 1 = ON, 0 = OFF
+byte potVal;               // potentiometer position
+
+void setup(){
+  Wire.begin(0x08);           // join I2C bus as Slave with address 0x08
+  // event handler initializations
+  Wire.onReceive(dataRcv);    // register an event handler for received data
+  Wire.onRequest(dataRqst);   // register an event handler for data requests
+  
+  // initialize global variables
+  recI2C = 255;
+  time_start = millis();
+  ledVal = 0;
+  pinMode(10, OUTPUT);        // set pin 13 mode to output
+  Serial.begin(9600);
+}
+
+void loop(){
+
+  potVal = analogRead(A0); // read analog value at pin A0 (potentiometer voltage)
+  ledVal = (int)(recI2C/255);
+  Serial.println(ledVal);
+  // blink logic code
+//        if((millis() - time_start) > (1000 * (float)(recI2C/255))) {
+//    ledVal = !ledVal;
+//    time_start = millis();
+//  }
+  digitalWrite(10, ledVal);
+}
+
+//received data handler function
+void dataRcv(int numBytes){
+  while(Wire.available()) { // read all bytes received
+    recI2C = Wire.read();
+  }
+}
+
+// requests data handler function
+void dataRqst(){
+  Wire.write(potVal); // send potentiometer position
+}
+```
+
 
 
 
