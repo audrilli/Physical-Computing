@@ -164,6 +164,7 @@ with brightness as an variable, mapped to the acceleration value, the led brught
 Every fourth Neopixel blinkes the same colour every 500ms
 
 ![IMG_0979](https://user-images.githubusercontent.com/104060149/199021897-f1ea6069-3a94-47fa-bfcc-39a18856c220.png)
+
 Cirquit/ Schematic
 
 <img width="500" alt="Cirquit" src="https://user-images.githubusercontent.com/104060149/199022017-8fede6fd-d548-4075-8389-91a8dc2bb366.png">
