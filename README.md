@@ -114,8 +114,9 @@ void loop() {
 Controlling the speed of a motor with a potentiometer, using a transistor.
 An LED playball for learning basic soldering First used for a workshop at the ZHdK Open Day in 2014
 
-![Base_2](https://user-images.githubusercontent.com/104060149/198892769-65531ff7-3527-4cd1-83cd-11503bb488ef.gif)
-![IMG_1047](https://user-images.githubusercontent.com/104060149/198893238-c74c7f46-819f-4571-99e7-9d95e5d9cdc4.jpg)
+![Base_2](https://user-images.githubusercontent.com/104060149/198980710-7235e538-6c6a-4c4e-b90e-6bd8a1acbfbf.gif)
+![IMG_1047](https://user-images.githubusercontent.com/104060149/198980759-1cd81184-dace-4b04-a7d7-a90804d94889.jpg)
+
 
 
 
