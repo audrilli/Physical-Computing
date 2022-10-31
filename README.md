@@ -117,6 +117,48 @@ An LED playball for learning basic soldering First used for a workshop at the ZH
 ![Base_2](https://user-images.githubusercontent.com/104060149/198980710-7235e538-6c6a-4c4e-b90e-6bd8a1acbfbf.gif)
 ![IMG_1047](https://user-images.githubusercontent.com/104060149/198980759-1cd81184-dace-4b04-a7d7-a90804d94889.jpg)
 
+### Exercise 5
+Connect Arduino together and send button signal to control inbuilt
+LEDs. Use the code found in Github to control the devices.
+
+Scematic/ Cirquit
+
+![Cirquit](https://user-images.githubusercontent.com/104060149/198982628-02a6124e-c57b-4579-9314-1d89d3b926e2.jpg)
+![Schematic](https://user-images.githubusercontent.com/104060149/198982677-b2fb13b0-fe86-4abe-b4bb-410ed916fd40.jpg)
+
+Code
+(Example from Github : https://github.com/IAD-ZHDK/Physical-Computing/blob/main/UART%20Arduino%20Communication/uart_code/uart_code.ino
+```C++
+char recUART;
+
+void setup() {
+  pinMode(8, INPUT_PULLUP); // set push button pin as input
+  pinMode(13, OUTPUT);      // set LED pin as output
+  digitalWrite(13, LOW);    // switch off LED pin
+  Serial.begin(9600);       // initialize UART with baud rate of 9600 bps
+}
+
+void loop() {
+  if (Serial.available()) {
+    recUART = Serial.read();    // read one byte from serial buffer and save to data_rcvd
+
+    if (recUART == '1') {     // switch LED On
+      digitalWrite(13, HIGH);
+    } 
+    
+    if (recUART == '0') {     // switch LED Off
+      digitalWrite(13, LOW);
+    }
+
+  if (digitalRead(8) == HIGH) { // send the char '0' to serial if button is not pressed. 
+    Serial.write('0'); 
+  }else {           // send the char '1' to serial if button is pressed.
+    Serial.write('1'); 
+  }
+  }   
+}
+```
+
 
 
 
