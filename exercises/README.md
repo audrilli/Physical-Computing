@@ -469,5 +469,31 @@ void loop() {
   }
 }
 ```
+## Exercise 9
+Adafruit Neopixels get controlled by a temperature Sensor. The higher the temperature, the leds turn red.
+
+![IMG_1023](https://user-images.githubusercontent.com/104060149/199033377-b0473c47-ee28-44e9-a6bd-df04dbf53dc1.png)
+
+//Sensor is not visible on the picture
+
+Circuit/ Schematic
+
+<img width="500" alt="Cirquit" src="https://user-images.githubusercontent.com/104060149/199033621-7e528b71-72ea-49d4-b563-c4a5cc65f6d2.png">
+<img width="500" alt="Schematic" src="https://user-images.githubusercontent.com/104060149/199033642-bc3da4bf-57ce-49fb-ae5d-c643953e99ce.png">
+
+Code
+```C++
+float color = map(temp.temperature, 24.5, 26, 0, 255);
+
+delay(100);
+
+//void loop NEOPIXEL
+for (int i=0; i<NUMPIXELS; i++){
+  pixels.setPixelColor(i, pixels.Color(color , 0, 255-color));
+}
+```
+Temperature is written in a float and mapped onto the color of the neopixel. The higher the temperature, more pixels light up.
+
+
 
 
