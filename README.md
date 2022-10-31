@@ -56,5 +56,76 @@ void loop() {
 ```
 
 
+### Exercise 2
+Controlling an incandescent lightbulb with a transistor.
+
+<img width="500" alt="Picture" src="https://user-images.githubusercontent.com/104060149/198530328-169aae94-19e7-4399-9a48-888547d30224.jpeg">
+
+Scematic/ Cirquit
+
+<img width="500" alt="Cirquit" src="https://user-images.githubusercontent.com/104060149/198529900-0968f1e9-a948-46b6-99be-bbe8421f256b.png">
+<img width="500" alt="Schematic" src="https://user-images.githubusercontent.com/104060149/198529913-5e184bce-0d81-4b26-8971-9063b8891742.png">
+
+Code
+```C++
+#define transistor 3
+
+void setup() {
+  pinMode(transistor, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(transistor, HIGH);
+  delay(1000);
+  digitalWrite(transistor, LOW);
+  delay(1000); 
+}
+```
+### Exercise 3
+Controlling the speed of a motor with a potentiometer, using a transistor.
+
+<img width="500" alt="Picture" src="https://user-images.githubusercontent.com/104060149/198532153-44a5747a-a380-4cd5-a97f-6c12398f82fc.jpeg">
+
+Scematic/ Cirquit
+
+<img width="500" alt="schematic" src="https://user-images.githubusercontent.com/104060149/198532281-4f6bb9dc-a38f-4a26-9e61-36f6ad803fd0.png">
+
+Code
+```C++
+#define motorPin 3
+#define meterPin A0
+
+void setup() {
+  pinMode(motorPin, OUTPUT);
+  pinMode(meterPin, INPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  int currentMeterValue = analogRead(meterPin);
+  Serial.println(currentMeterValue);
+
+  int motorStrength = map(currentMeterValue, 0, 1023, 0, 255); 
+  
+  analogWrite(motorPin, motorStrength);
+
+```
+### Exercise 4
+Controlling the speed of a motor with a potentiometer, using a transistor.
+An LED playball for learning basic soldering First used for a workshop at the ZHdK Open Day in 2014
+
+![Base_2](https://user-images.githubusercontent.com/104060149/198980710-7235e538-6c6a-4c4e-b90e-6bd8a1acbfbf.gif)
+![IMG_1047](https://user-images.githubusercontent.com/104060149/198980759-1cd81184-dace-4b04-a7d7-a90804d94889.jpg)
+
+
+
+
+
+
+
+
+
+
+
 
 
