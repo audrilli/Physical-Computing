@@ -3,7 +3,18 @@ let serialOptions = { baudRate: 9600 };
 let serial;
 let clicked = false;
 let portInfo = { usbVendorId: 0x3EB, usbProductId: 0x2145 }
-let serialData = 0
+let serialData = 0;
+let playing = false;
+
+
+//Sounds load
+let mySound;
+function preload(){
+  soundFormats("mp3");
+  mySound = loadSound("soundassets/sound1");
+
+
+}
 
 function setup() {
   createCanvas(300, 300);
@@ -25,26 +36,36 @@ async function connectPort() {
   if (!serial.isOpen()) {
     await serial.connectAndOpen(portInfo, serialOptions);
   }
+  //Sound Setup
+  
 }
 
 function draw() {
-  //background(255);
-  background(0,0,serialData);
 
-  if (serialData ==255) {
-    background(0,0,0)
-    
-  } else {
-    background(0,0,serialData);
-    
-  }
-  circleChange();
+// background(255);
+// circleChange();
+let cnv = createCanvas(200, 200);
+  cnv.mousePressed(canvasPressed);
+  background(0,0,255);
+  text('play', 10, 20);
   
-  //sendValue();
+}
+
+function canvasPressed() {
+  if (!playing) {
+    mySound.play();
+    console.log("playing")
+    
+  } else  {
+    mySound.pause();
+    console.log("stopped")
+  }
+  playing = !playing;
+
 }
 
 function circleChange(){
-  circle(150,150,serialData);
+  circle(150,150,map(serialData,0,1023,0,255));
   fill(0,0,255);
   noStroke();
 }
