@@ -218,6 +218,39 @@ for (int i=0; i<NUMPIXELS; i++){
 ```
 Temperature is written in a float and mapped onto the color of the neopixel. The higher the temperature, more pixels light up.
 
+## Exercise 10
+
+The color of neopixels gets changed by the value of a potentiometer
+
+![IMG_0982](https://user-images.githubusercontent.com/104060149/199046017-56062752-e8d3-445d-b03c-0361f430d887.png)
+
+Circuit/ Scematic
+
+<img width="500" alt="Scematic" src="https://user-images.githubusercontent.com/104060149/199046089-d9209840-4085-4f6e-83fb-09fedbcdd6d7.png">
+<img width="500" alt="Cirquit" src="https://user-images.githubusercontent.com/104060149/199046109-74bf67e4-fb94-42ec-9cb8-950f8e234afd.png">
+
+Code
+```C++
+#define R 255
+#define G 255
+#define B 255
+
+void loop() {
+  int sensVal = analogRead(A2);
+  sensVal = constrain(sensVal, 0, 255);
+  Serial.println(sensVal);
+  delay(1);
+
+  //Loop Neopixel
+  pixels.clear();
+  for (int i = 0; i < NUMPIXELS; i++) {
+    pixels.setPixelColor(i, pixels.Color(R-sensVal, G-sensVal, B));
+    pixels.show();
+```
+The different values of the neopixel colours get splitted in 3 different variables, R, G, B, and the value of the potentiometer gets subtracted from the value of the R,G,B.
+
+
+
 
 
 
