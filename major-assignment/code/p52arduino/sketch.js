@@ -7,6 +7,8 @@ let serialData = 0;
 let playing = false;
 
 
+
+
 //Sounds load
 let mySound;
 function preload(){
@@ -38,6 +40,9 @@ async function connectPort() {
   }
   //Sound Setup
   
+
+
+
 }
 
 function draw() {
@@ -46,8 +51,12 @@ function draw() {
 // circleChange();
 let cnv = createCanvas(200, 200);
   cnv.mousePressed(canvasPressed);
-  background(0,0,255);
+  background(0,0,(0+serialData*255));
   text('play', 10, 20);
+  // mySound.setVolume(serialData);
+  
+  
+
   
 }
 

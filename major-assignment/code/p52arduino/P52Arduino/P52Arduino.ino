@@ -27,8 +27,8 @@ void loop() {
     parseData();
     newData = false;
   }
-   int sensorValue = analogRead(A0);
-  Serial.println(sensorValue);
+   float sensorValue = analogRead(A0);
+  Serial.println(map(sensorValue,0,1023,0.0,1.00));
   delay(1);
 }
 
