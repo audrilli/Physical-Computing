@@ -1,3 +1,4 @@
+#include <Arduino_LSM6DS3.h>
 const int MAX_VALUES = 5;  //maximum amount of values received
 const byte numChars = 32;
 char receivedChars[numChars];
@@ -13,8 +14,33 @@ boolean newData = false;
 void setup() {
   Serial.begin(9600);
   pinMode(LED_BUILTIN, OUTPUT);
- 
-}
+
+  while (!Serial)
+    ;
+
+  if (!IMU.begin()) {
+    Serial.println("Failed to initialize IMU!");
+
+    while (1)
+      ;
+  }
+  //Serialprint setup Gyroscope
+  Serial.print("Gyroscope sample rate = ");
+  Serial.print(IMU.gyroscopeSampleRate());
+  Serial.println(" Hz");
+  Serial.println();
+  Serial.println("Gyroscope in degrees/second");
+  Serial.println("X\tY\tZ");
+
+  //Serialprint setup Accelerometer
+  Serial.print("Accelerometer sample rate = ");
+  Serial.print(IMU.accelerationSampleRate());
+  Serial.println(" Hz");
+  Serial.println();
+  Serial.println("Acceleration in g's");
+  Serial.println("X\tY\tZ");
+}  
+
 
 //============
 
@@ -27,9 +53,33 @@ void loop() {
     parseData();
     newData = false;
   }
-   float sensorValue = analogRead(A0);
-  Serial.println(map(sensorValue,0,1023,0.0,1.00));
-  delay(1);
+  // float sensorValue = analogRead(A0);
+  // Serial.println(map(sensorValue, 0, 1023, 0.0, 1.00));
+  // delay(1);
+
+  float xg, yg, zg;
+  float xa, ya, za;
+
+  if (IMU.gyroscopeAvailable() && IMU.accelerationAvailable()) {
+    IMU.readAcceleration(xa, ya, za);
+    IMU.readGyroscope(xg, yg, zg);
+    Serial.print(xg);
+   
+    Serial.print(",");
+    Serial.print(yg);
+   
+    Serial.print(",");
+    Serial.print(zg);
+    
+    Serial.print(",");
+    Serial.print(xa);
+   
+    Serial.print(",");
+    Serial.print(ya);
+   
+    Serial.print(",");
+    Serial.println(za);
+  }
 }
 
 //============
@@ -97,4 +147,3 @@ void parseData() {  // split the data into its parts
   Serial.println(r);
   Serial.println(t);
 }
-

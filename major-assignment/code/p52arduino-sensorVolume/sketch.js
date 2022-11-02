@@ -7,9 +7,18 @@ let clicked = false;
 let portInfo = { usbVendorId: 0x3eb, usbProductId: 0x2145 };
 let serialData = 0;
 let playing = false;
+let xa = 0.0;
+let za = 0.4;
+let freqNow = 300;
+let freqLast = 300;
+let alpha = 0.01;
+let freqza = 1000;
 
 //Sounds load
 let mySound;
+let osc;
+osc = new p5.Oscillator(300);
+//osc.setType(square);
 function preload() {
   soundFormats("mp3");
   mySound = loadSound("soundassets/sound1");
@@ -47,20 +56,40 @@ function draw() {
   text("play", 10, 20);
 
   newVolume = serialData / 1023;
-  console.log(newVolume);
-  mySound.setVolume(newVolume);
+  // console.log(newVolume);
+  mySound.setVolume(1);
+  //console.log("new: ",za);
+
+
+  freqza = za * 500;
+  osc.freq(freqNow);
+  freqLast = freqNow;
+  freqNow = (alpha * int(freqza)) + ((1 - alpha) * freqLast);
+  console.log(freqNow);
 }
 
 function canvasPressed() {
+  console.log(osc);
   if (!playing) {
-    mySound.play();
+    // mySound.play();
+    osc.start();
     console.log("playing");
   } else {
-    mySound.pause();
+    // mySound.pause();
+    osc.stop();
     console.log("stopped");
   }
   playing = !playing;
 }
+
+/*
+function playOscillator(){
+  osc.start();
+  osc.amp(0.5);
+  osc.freq(500+(1-za)*1000);
+
+}
+*/
 
 function circleChange() {
   circle(150, 150, map(serialData, 0, 1023, 0, 255));
@@ -105,9 +134,17 @@ function onSerialConnectionClosed(eventSender) {
  * @param {String} newData new data received over serial
  */
 function onSerialDataReceived(eventSender, newData) {
-  console.log("onSerialDataReceived", newData);
+  // console.log("onSerialDataReceived", newData);
   msg.html("onSerialDataReceived: " + newData);
   serialData = newData;
+  // console.log(serialData);
+  let splitString = split(serialData, ",");
+  // console.log(splitString[0]);
+
+  // xa = float(splitString[0]);
+  za = float(splitString[5]);
+
+  //console.log(za);
 }
 
 async function serialWriteTextData() {
