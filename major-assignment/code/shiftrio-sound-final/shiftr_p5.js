@@ -93,7 +93,7 @@ function draw() {
   // mySound.amp(0.1);
 
   //Freq filter
-  freqza = za * 20;
+  freqza = (xa*20)+ (ya * 20);
   osc.freq(freqNow);
   freqLast = freqNow;
   freqNow = alpha * int(freqza) + (1 - alpha) * freqLast;
