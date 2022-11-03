@@ -1,5 +1,3 @@
-// const { Amplitude } = require("../../../../../../../../../.vscode/extensions/samplavigne.p5-vscode-1.2.11/p5types");
-
 let msg;
 let serialOptions = { baudRate: 9600 };
 let serial;
@@ -7,21 +5,27 @@ let clicked = false;
 let portInfo = { usbVendorId: 0x3eb, usbProductId: 0x2145 };
 let serialData = 0;
 let playing = false;
-let xa = 0.0;
+
+let xa = 0.0, ya = 0.0, xg = 0.0, yg=0.0, zg=0.0; 
 let za = 0.4;
-let freqNow = 300;
-let freqLast = 300;
+
+let freqNow = 100;
+let freqLast = 100;
 let alpha = 0.01;
 let freqza = 1000;
 
 //Sounds load
 let mySound;
+let baseSound;
+let addSound;
 let osc;
-osc = new p5.Oscillator(300);
+osc = new p5.Oscillator("sine");
 //osc.setType(square);
 function preload() {
   soundFormats("mp3");
   mySound = loadSound("soundassets/sound1");
+  baseSound = loadSound("soundassets/baseTone1_mixdown");
+  addSound = loadSound("soundassets/baseTon2_01");
 }
 
 function setup() {
@@ -52,31 +56,40 @@ function draw() {
   // circleChange();
   let cnv = createCanvas(200, 200);
   cnv.mousePressed(canvasPressed);
-  background(0, 0, 0);
-  text("play", 10, 20);
+  background(xa*100, xg*100, zg*100);
 
-  newVolume = serialData / 1023;
+  // newVolume = serialData / 1023;
   // console.log(newVolume);
-  mySound.setVolume(1);
+  // osc.setVolume(1);
+  osc.amp(0.03);
+  
+  baseSound.setVolume(1);
+  console.log("addSound", addSound.amp());
+
   //console.log("new: ",za);
 
-
-  freqza = za * 500;
+  freqza = za * 200;
   osc.freq(freqNow);
   freqLast = freqNow;
-  freqNow = (alpha * int(freqza)) + ((1 - alpha) * freqLast);
+  freqNow = alpha * int(freqza) + (1 - alpha) * freqLast;
   console.log(freqNow);
 }
 
 function canvasPressed() {
-  console.log(osc);
+  // console.log(osc);
   if (!playing) {
     // mySound.play();
+    baseSound.loop();
     osc.start();
+    addSound.play();
+    
     console.log("playing");
   } else {
     // mySound.pause();
+    baseSound.pause();
     osc.stop();
+    addSound.pause();
+    
     console.log("stopped");
   }
   playing = !playing;
@@ -91,11 +104,10 @@ function playOscillator(){
 }
 */
 
-function circleChange() {
-  circle(150, 150, map(serialData, 0, 1023, 0, 255));
-  fill(0, 0, 255);
-  noStroke();
-}
+// function circleChange() {
+//   circle(150, 150, map(serialData, 0, 1023, 0, 255));
+//   fill(0, 0, 255);
+//   noStroke();
 
 /**
  * Callback function by serial.js when there is an error on web serial
@@ -141,8 +153,13 @@ function onSerialDataReceived(eventSender, newData) {
   let splitString = split(serialData, ",");
   // console.log(splitString[0]);
 
-  // xa = float(splitString[0]);
+  xa = float(splitString[3]);
+  ya = float(splitString[4]);
   za = float(splitString[5]);
+
+  xg = float(splitString[0]);
+  yg = float(splitString[1]);
+  zg = float(splitString[2]);
 
   //console.log(za);
 }
