@@ -90,6 +90,7 @@ function draw() {
   osc.amp(0.2);
   baseSound.setVolume(1);
   addSound.amp(xg);
+  // mySound.amp(0.1);
 
   //Freq filter
   freqza = za * 20;
@@ -108,7 +109,7 @@ function canvasPressed() {
 
     console.log("playing");
   } else {
-    // mySound.pause();
+    mySound.pause();
     baseSound.pause();
     osc.stop();
     addSound.pause();
