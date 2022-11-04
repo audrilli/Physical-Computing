@@ -33,7 +33,7 @@ osc = new p5.Oscillator("sine");
 
 let freqNow = 100;
 let freqLast = 100;
-let alpha = 0.01;
+let alpha = 0.1;
 let freqza = 1000;
 let gamma = 1;
 
@@ -87,18 +87,18 @@ function setup() {
 }
 
 function draw() {
-  let cnv = createCanvas(256 *2, 256*2);
+  let cnv = createCanvas(windowWidth, windowHeight);
   cnv.mousePressed(canvasPressed);
 
-  background(250);
+  background(0);
   // noStroke();
   // fill(0);
   // circle(width / 2, height / 2, xa * 100);
 
-  osc.amp(0.2);
+  osc.amp(0.3);
   baseSound.setVolume(1);
   addSound.amp(0.5);
-  chordSound.amp((map(za,-1,1,0,1)));
+  chordSound.amp((map(xa,-2.5,2,0,1)));
 console.log("volume chord Sound: ",chordSound.amp())
   // mySound.amp(0.1);
 
@@ -120,18 +120,26 @@ beginShape();
 for(var  i = 0; i< spectrum.length; i++){
   var angle = map(i,0,spectrum.length,0,360);
   var amp = spectrum[i];
-  var transp = spectrum[i];
+  // var transp = spectrum[i];
   var r = map(amp,0,256,100,200);
   var x = r*cos(angle);
   var y= r*sin(angle);
-  vertex(x,y);
+  // var a = spectrum[i];
+  
+  curveVertex(x,y,50);
+//  console.log(i);
+  
   // var y=map(amp,0,200,height,0);
   // line(i ,height, i,y );
   //circle(width/2 ,height/2, i/2, );
 }
-fill(255,255,255,transp/4);
+// fill(255,255,255,transp/4);
+noFill();
+stroke(255);  
+
 endShape();
   // console.log(spectrum.length);
+  
 
 }
 function canvasPressed() {
@@ -184,7 +192,7 @@ function onMessageArrived(message) {
 
   // console.log("xa:", xa);
   // console.log("ya:", ya);
-  // console.log("za:", za);
+  console.log("za:", za);
   // console.log("xg:", xg);
   // console.log("yg:", yg);
   // console.log("zg:", zg);
