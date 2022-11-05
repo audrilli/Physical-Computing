@@ -148,7 +148,7 @@ function canvasPressed() {
     // mySound.play();
     baseSound.loop();
     osc.start();
-    chordSound.loop();
+    //xswchordSound.loop();
     // addSound.play();
 
     console.log("playing");
@@ -156,7 +156,7 @@ function canvasPressed() {
     // mySound.pause();
     baseSound.pause();
     osc.stop();
-    chordSound.pause();
+    //chordSound.pause();
     // addSound.pause();
 
     console.log("stopped");
